@@ -24,12 +24,13 @@ def calcular_impostos():
 
     if verificar_numero_arquivo(numero_usuario):
         valor = float(entry_valor.get())
+        deducao = round(valor * 0.4, 3)
         ir = round(valor * 0.015, 3)
         pis = round(valor * 0.065, 3)
         cofins = round(valor * 0.03, 3)
         clss = round(valor * 0.01, 3)
-
-        resultado_text.set(f"IR: {ir} \n PIS: {pis} \n COFINS: {cofins} \n CLSS: {clss}")
+        vliquido = round(valor - (ir + pis + cofins + clss), 3)
+        resultado_text.set(f"DEDUÇÃO: R${deducao}     |     IR: R${ir} \n PIS: R${pis}     |     COFINS: {cofins} \n CLSS: R${clss} \n VAL. LIQUIDO: {vliquido}")
     else:
         label_convenio.config(foreground="#800000", text=f"\nO convênio {numero_usuario} não está cadastrado!")
 
