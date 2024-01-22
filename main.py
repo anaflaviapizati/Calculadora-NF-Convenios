@@ -12,7 +12,7 @@ def verificar_numero_arquivo(numero):
                 if linha.startswith(f"{numero} - "):
                     return True
     except FileNotFoundError:
-        print(f"Arquivo '{nome_arquivo}' not founded.")
+        print(f"Arquivo '{nome_arquivo}' não encontrado.")
     except Exception as e:
         print(f"Ocorreu um erro: {e}")
 
@@ -31,7 +31,7 @@ def calcular_impostos():
 
         resultado_text.set(f"IR: {ir} \n PIS: {pis} \n COFINS: {cofins} \n CLSS: {clss}")
     else:
-        label_convenio.config(foreground="#ffff00", text=f"\nO convênio {numero_usuario} não está cadastrado!")
+        label_convenio.config(foreground="#800000", text=f"\nO convênio {numero_usuario} não está cadastrado!")
 
 
 def buscar_convenio():
@@ -39,7 +39,7 @@ def buscar_convenio():
 
     if verificar_numero_arquivo(numero_usuario):
         nome_convenio = obter_nome_convenio(numero_usuario)
-        label_convenio.config(text=f"\nConvênio escolhido: {nome_convenio}", foreground="#90ee90")
+        label_convenio.config(text=f"{nome_convenio}", foreground="#006400")
     else:
         label_convenio.config(foreground="#ffff00", text=f"\nO convênio {numero_usuario} não está cadastrado!")
 
@@ -65,7 +65,7 @@ root = tk.Tk()
 root.title("Calculadora Notas Fiscais - NF")
 
 # Ajustar o tamanho e centralizar a interface
-largura_janela = 360
+largura_janela = 316
 altura_janela = 500  # Ajustado para 500 pixels
 largura_tela = root.winfo_screenwidth()
 altura_tela = root.winfo_screenheight()
@@ -99,7 +99,7 @@ resultado_text = tk.StringVar()
 label_resultado = ttk.Label(root, textvariable=resultado_text, justify="center")
 
 # Adicionar mensagem no rodapé
-rodape_label = ttk.Label(root, justify="center", foreground="#90ee90",
+rodape_label = ttk.Label(root, justify="center", foreground="#006400",
                          text="Desenvolvido por MedCenter Hospital Dia ")
 
 # Posicionar widgets usando grid
