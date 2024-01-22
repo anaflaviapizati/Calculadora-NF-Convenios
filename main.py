@@ -12,7 +12,7 @@ def verificar_numero_arquivo(numero):
                 if linha.startswith(f"{numero} - "):
                     return True
     except FileNotFoundError:
-        print(f"Arquivo '{nome_arquivo}' não encontrado.")
+        print(f"Arquivo '{nome_arquivo}' not founded.")
     except Exception as e:
         print(f"Ocorreu um erro: {e}")
 
