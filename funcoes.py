@@ -12,3 +12,23 @@ def verificar_numero_arquivo(numero):
         print(f"Ocorreu um erro: {e}")
 
     return False
+
+def calcular_impostos():
+    numero_usuario = entry_numero.get()
+
+match numero-usuario
+
+        # Limpar resultados anteriores
+        for row in tree.get_children():
+            tree.delete(row)
+
+        # Adicionar novos resultados à tabela
+        tree.insert("", "end", values=["DEDUÇÃO", f"R${deducao}"])
+        tree.insert("", "end", values=["IR", f"R${ir}"])
+        tree.insert("", "end", values=["PIS", f"R${pis}"])
+        tree.insert("", "end", values=["COFINS", f"R${cofins}"])
+        tree.insert("", "end", values=["CLSS", f"R${clss}"])
+        tree.insert("", "end", values=["VALOR LÍQUIDO", f"R${vliquido}"])
+
+    else:
+        label_convenio.config(foreground="#800000", text=f"\nO convênio {numero_usuario} não está cadastrado!")
