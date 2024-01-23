@@ -1,6 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+import regras
+
+convenio = 0
+
+print(regras)
 
 
 def verificar_numero_arquivo(numero):
@@ -30,7 +35,19 @@ def calcular_impostos():
         cofins = round(valor * 0.03, 3)
         clss = round(valor * 0.01, 3)
         vliquido = round(valor - (ir + pis + cofins + clss), 3)
-        resultado_text.set(f"DEDUÇÃO: R${deducao}     |     IR: R${ir} \n PIS: R${pis}     |     COFINS: {cofins} \n CLSS: R${clss} \n VAL. LIQUIDO: {vliquido}")
+
+        # Limpar resultados anteriores
+        for row in tree.get_children():
+            tree.delete(row)
+
+        # Adicionar novos resultados à tabela
+        tree.insert("", "end", values=["DEDUÇÃO", f"R${deducao}"])
+        tree.insert("", "end", values=["IR", f"R${ir}"])
+        tree.insert("", "end", values=["PIS", f"R${pis}"])
+        tree.insert("", "end", values=["COFINS", f"R${cofins}"])
+        tree.insert("", "end", values=["CLSS", f"R${clss}"])
+        tree.insert("", "end", values=["VALOR LÍQUIDO", f"R${vliquido}"])
+
     else:
         label_convenio.config(foreground="#800000", text=f"\nO convênio {numero_usuario} não está cadastrado!")
 
@@ -42,7 +59,9 @@ def buscar_convenio():
         nome_convenio = obter_nome_convenio(numero_usuario)
         label_convenio.config(text=f"{nome_convenio}", foreground="#006400")
     else:
-        label_convenio.config(foreground="#ffff00", text=f"\nO convênio {numero_usuario} não está cadastrado!")
+        label_convenio.config(foreground="#8B0000", text=f"\nO convênio {numero_usuario} não está cadastrado!")
+
+
 
 
 def obter_nome_convenio(numero):
@@ -61,13 +80,21 @@ def obter_nome_convenio(numero):
     return f"Convenio {numero}"
 
 
+def on_enter_key_calcular(event):
+    calcular_impostos()
+
+
+def on_enter_key_buscar(event):
+    buscar_convenio()
+
+
 # Criar a janela principal
 root = tk.Tk()
 root.title("Calculadora Notas Fiscais - NF")
 
 # Ajustar o tamanho e centralizar a interface
 largura_janela = 316
-altura_janela = 500  # Ajustado para 500 pixels
+altura_janela = 600  # Ajustado para 600 pixels
 largura_tela = root.winfo_screenwidth()
 altura_tela = root.winfo_screenheight()
 x_pos = largura_tela // 2 - largura_janela // 2
@@ -96,6 +123,14 @@ entry_valor = ttk.Entry(root)
 
 button_calcular = ttk.Button(root, text="Calcular Impostos", command=calcular_impostos)
 
+# Adicionar uma tabela para mostrar os resultados
+columns = ("Item", "Valor")
+tree = ttk.Treeview(root, columns=columns, show="headings", height=6)
+tree.heading("Item", text="Item", anchor="center")
+tree.heading("Valor", text="Valor", anchor="center")
+tree.column("Item", width=150, anchor="center")
+tree.column("Valor", width=150, anchor="center")
+
 resultado_text = tk.StringVar()
 label_resultado = ttk.Label(root, textvariable=resultado_text, justify="center")
 
@@ -112,7 +147,13 @@ label_valor.grid(row=5, column=0, sticky="w", padx=25, pady=5)
 entry_valor.grid(row=6, column=0, columnspan=2, padx=10, pady=5)
 button_calcular.grid(row=7, column=0, columnspan=2, pady=10)
 label_resultado.grid(row=8, column=0, columnspan=2, padx=10, pady=5)
-rodape_label.grid(row=9, column=0, columnspan=2, pady=5)
+tree.grid(row=9, column=0, columnspan=2, pady=10)
+rodape_label.grid(row=10, column=0, columnspan=2, pady=5)
+
+# Associar a função ao evento <Return> no widget de entrada entry_valor
+entry_valor.bind('<Return>', on_enter_key_calcular)
+# Associar a função ao evento <Return> no widget de entrada entry_numero para o botão buscar_convenio
+entry_numero.bind('<Return>', on_enter_key_buscar)
 
 # Iniciar a execução da interface gráfica
 root.mainloop()
